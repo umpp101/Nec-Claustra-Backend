@@ -1,7 +1,8 @@
 class ConversationsController < ApplicationController
 def index
+    # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
     conversations = Conversation.all
-    render json: conversations
+    render json: {conversations: conversations}
 end
 
 def show
@@ -14,7 +15,11 @@ def create
     conversation = Conversation.new(conversation_params)
     conversation.sender_id = user_id
     if conversation.save
-        render json: conversations
+        # render json: conversations
+    # we need to do this(initialize new Serializer instances), so our create method can broadcast the data to our channels
+    serialized_data = ActiveModelSerializers::Adapter::Json.new(ConversationSerializer.new(conversation)).serializable_hash
+      ActionCable.server.broadcast 'conversations_channel', serialized_data
+      head :ok
     else
         render json: {error: "Something went wrong"}
     end
