@@ -42,5 +42,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'faker'
 gem 'fast_jsonapi'
+gem 'jwt'
 gem "active_model_serializers"
 gem 'actioncable'
