@@ -3,12 +3,12 @@ class ConversationsController < ApplicationController
     def index
     # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
     conversations = Conversation.all
-    render json: {conversations: conversations}, :include => [:messages]
+    render json: ConversationSerializer.new(conversations, {include: [:messages]})
 end
 
 def show
     conversation = Conversation.find(params[:id])
-    render json: conversations
+    render json: ConversationSerializer.new(conversation, {include: [:messages]}) 
 end
 
 def create

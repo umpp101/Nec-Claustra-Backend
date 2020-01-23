@@ -36,7 +36,7 @@ class MessagesController < ApplicationController
     
     def show
         message = Message.find(params[:id])
-        render json: message
+        render json: MessageSerializer.new(message) 
     end
 
     def message_params
