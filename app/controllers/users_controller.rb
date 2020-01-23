@@ -22,25 +22,25 @@ class UsersController < ApplicationController
         end
     end
 
-    def update
-        user = User.find(params[:id])
-        if user.update(user_params)
-            render json: user
-        else
-            render json: {error: "Something went wrong"}
-        end
-    end
+    # def update
+    #     user = User.find(params[:id])
+    #     if user.update(user_params)
+    #         render json: user
+    #     else
+    #         render json: {error: "Something went wrong"}
+    #     end
+    # end
 
-    def destroy
-        user = User.find(params[:id])
-        if user.destroy
-            render json: {message: "Successfully deleted user"}
-        else
-            render json: {error: "Something went wrong"}
-        end
-    end
+    # def destroy
+    #     user = User.find(params[:id])
+    #     if user.destroy
+    #         render json: {message: "Successfully deleted user"}
+    #     else
+    #         render json: {error: "Something went wrong"}
+    #     end
+    # end
 
-    private
+    # private
 
     def user_params
         params.require(:user).permit(:user_name, :password, :language, :nationality)

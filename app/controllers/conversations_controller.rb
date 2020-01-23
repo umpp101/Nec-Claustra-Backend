@@ -1,19 +1,22 @@
 class ConversationsController < ApplicationController
-def index
+
+    def index
     # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
     conversations = Conversation.all
-    render json: {conversations: conversations}
+    render json: {conversations: conversations}, :include => [:messages]
 end
 
 def show
-    conservation = Conversation.find(params[:id])
+    conversation = Conversation.find(params[:id])
     render json: conversations
 end
 
 def create
-    user_id = current_user.id
+    # user_id = current_user.id
     conversation = Conversation.new(conversation_params)
-    conversation.sender_id = user_id
+    conversation.sender_id = 5
+    conversation.receiver_id = 3
+
     if conversation.save
         # render json: conversations
     # we need to do this(initialize new Serializer instances), so our create method can broadcast the data to our channels

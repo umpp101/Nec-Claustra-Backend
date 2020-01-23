@@ -30,9 +30,12 @@ end
 
 
 10.times do 
+    convo = Conversation.all.sample
+
     Message.create!(
     content: Faker::Hipster.sentence,
-    conversation_id: rand((Conversation.all.first.id)..(Conversation.all.last.id))
+    conversation_id: convo.id,
+    user_id: [convo.sender_id, convo.receiver_id].sample 
     )
     end
     
