@@ -15,7 +15,7 @@ Message.destroy_all
 10.times do 
     User.create!(
     user_name: Faker::Internet.username,
-    password: Faker::Internet.password,
+    password: "hey",
     language: Faker::Nation.language,
     nationality: Faker::Nation.nationality,
 )

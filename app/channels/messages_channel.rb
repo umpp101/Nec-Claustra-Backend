@@ -14,7 +14,6 @@ class MessagesChannel < ApplicationCable::Channel
   # end
 
   def subscribed
-    p params[:data]
     stream_from "messages"
   end
 end
