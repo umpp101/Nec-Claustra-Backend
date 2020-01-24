@@ -2,6 +2,7 @@ class ConversationsController < ApplicationController
 
     def index
     # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
+    # byebug
     conversations = Conversation.all
     render json: ConversationSerializer.new(conversations, {include: [:messages]})
 end

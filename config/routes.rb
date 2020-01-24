@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  resources :conversations
+  resources :conversations 
   resources :messages
   resources :users
   post '/login', to: 'auth#create'
+  post '/signup',to: 'users#create'
 
   # *************************************
   # mount ActionCable.server, at: '/cable'

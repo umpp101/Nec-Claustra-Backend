@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
-    # skip_before_action :authorized, only: [:create, :index]
+    skip_before_action :authorized, only: [:create, :index]
 
     def index
         # byebug
         users = User.all
-        render json: {users: users}
+        # render json: {users: users}, except => [:password]
+        render json: UserSerializer.new(users, {except: [:password_digest]})
     end
 
     def show
@@ -14,6 +15,7 @@ class UsersController < ApplicationController
     end
 
     def create
+        # byebug
         user = User.create(user_params)
         if user.valid?
             token = encode_token(user_id: user.id)
@@ -42,6 +44,8 @@ class UsersController < ApplicationController
     # end
 
     # private
+
+  
 
     def user_params
         params.require(:user).permit(:user_name, :password, :language, :nationality)
