@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
         if auth_header
           begin
             JWT.decode(auth_header, 'my_secret', true, algorithm: 'HS256')
-            byebug
+            # byebug
           rescue JWT::DecodeError
             nil
           end

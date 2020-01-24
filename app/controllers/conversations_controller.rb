@@ -7,6 +7,15 @@ class ConversationsController < ApplicationController
     # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
     # byebug
     conversations = Conversation.all
+
+    # # USE USERS QUERY PARAM (param[:user]) AND LOGIC TO GRAB CONVOS OF THAT USER
+    #     # conversations = Conversation.all.select{|convo| convo.sender_id === user.id || convo.receiver_id === user.id}
+    # if params[:user]
+    #     byebug
+    #     # conversations = Conversation.where()
+    #     conversations = Conversation.find(param[:id] === params[:user].id)
+    # end
+
     # render json: ConversationSerializer.new(conversations, {include: [:messages]})
     render json: {conversations: conversations} , :include => [:messages]
     end
@@ -40,6 +49,14 @@ def destroy
         render json: {error: "Something went wrong"}
     end
 end
+
+
+
+def my_convos
+    user_convos = User.find(params[:user_id]).my_convos
+    render json: ConversationSerializer.new(user_convos, {include: [:messages]}) 
+end
+
 
 private
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :users
   post '/login', to: 'auth#create'
   post '/signup',to: 'users#create'
+  get '/myconvos/:user_id', to: 'conversations#my_convos'
 
   # *************************************
   # mount ActionCable.server, at: '/cable'
