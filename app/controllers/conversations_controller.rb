@@ -1,68 +1,55 @@
 class ConversationsController < ApplicationController
-    skip_before_action :authorized
-    # skip_before_action :authorized
+  skip_before_action :authorized
+  # skip_before_action :authorized
 
+  def index
+    user = User.find(params[:user_id])
+    render json: { conversations: user.conversations }, :include => [:messages]
+  end
 
-    def index
-    # this is going to be used for the front-end’s initial fetch request to receive the current existing conversations and their messages.
+  def create
     # byebug
-    conversations = Conversation.all
-
-    # # USE USERS QUERY PARAM (param[:user]) AND LOGIC TO GRAB CONVOS OF THAT USER
-    #     # conversations = Conversation.all.select{|convo| convo.sender_id === user.id || convo.receiver_id === user.id}
-    # if params[:user]
-    #     byebug
-    #     # conversations = Conversation.where()
-    #     conversations = Conversation.find(param[:id] === params[:user].id)
-    # end
-
-    # render json: ConversationSerializer.new(conversations, {include: [:messages]})
-    render json: {conversations: conversations} , :include => [:messages]
+    if Conversation.between(conversation_params[:sender_id], conversation_params[:receiver_id]).present?
+      conversation = Conversation.find_by(sender_id: conversation_params[:sender_id], receiver_id: conversation_params[:receiver_id]) ?
+        Conversation.find_by(sender_id: conversation_params[:sender_id], receiver_id: conversation_params[:receiver_id]) :
+        Conversation.find_by(sender_id: conversation_params[:receiver_id], receiver_id: conversation_params[:sender_id])
+      render json: { conversation: conversation }, :include => [:messages]
+    else
+      conversation = Conversation.create!(conversation_params)
+      if !conversation.valid?
+        render json: { error: "Something went wrong" }
+      else
+        render json: { conversation: conversation }, :include => [:messages]
+      end
     end
-    
-    def create
-        # user_id = current_user.id
-        conversation = Conversation.new(conversation_params)    
-        if conversation.save
-            # render json: conversations
-        # we need to do this(initialize new Serializer instances), so our create method can broadcast the data to our channels
-        serialized_data = ActiveModelSerializers::Adapter::Json.new(ConversationSerializer.new(conversation)).serializable_hash
-          ActionCable.server.broadcast 'conversations_channel', serialized_data
-          head :ok
-        else
-            render json: {error: "Something went wrong"}
-        end
+  end
+
+  def show
+    user = User.find(params[:user_id])
+    if conversation = user.conversations.find { |convo| convo.id == params[:id].to_i }
+      render json: { conversation: conversation }, :include => [:messages]
+    else
+      render json: { error: "Convo not found." }
     end
+  end
 
-
-    def show
-        conversation = Conversation.find(params[:id])
-        render json: ConversationSerializer.new(conversation, {include: [:messages]}) 
-    end
-
-
-def destroy
+  def destroy
     conversation = Conversation.find(params[:id])
     if conversation.destroy
-        render json: {message: "Successfully deleted conversation"}
+      render json: { message: "Successfully deleted conversation" }
     else
-        render json: {error: "Something went wrong"}
+      render json: { error: "Something went wrong" }
     end
-end
+  end
 
+  # def my_convos
+  #     user_convos = User.find(params[:user_id]).my_convos
+  #     render json: ConversationSerializer.new(user_convos, {include: [:messages]})
+  # end
 
+  private
 
-def my_convos
-    user_convos = User.find(params[:user_id]).my_convos
-    render json: ConversationSerializer.new(user_convos, {include: [:messages]}) 
-end
-
-
-private
-
-def conversation_params
+  def conversation_params
     params.require(:conversation).permit(:sender_id, :receiver_id)
-end
-
-
+  end
 end

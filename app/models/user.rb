@@ -10,12 +10,22 @@ class User < ApplicationRecord
     has_many :sender_messages, through: :sender_conversations, source: :messages
     has_many :receiver_messages, through: :receiver_conversations, source: :messages
 
-    def messages_sent
-        self.sender_messages.where(user_id: self.id)
+    # def messages_sent
+    #     self.sender_messages.where(user_id: self.id)
+    # end
+
+    # def messages_received
+    #     self.receiver_messages.where(user_id: self.id)
+    # end
+
+    has_many :messages
+    
+    def conversations
+        sender_conversations + receiver_conversations
     end
 
-    def messages_received
-        self.receiver_messages.where(user_id: self.id)
+    def conversation_ids
+        conversations.map{|el| el.id}
     end
 
     def my_convos

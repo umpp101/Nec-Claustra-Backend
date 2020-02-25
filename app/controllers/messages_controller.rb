@@ -12,16 +12,14 @@ def index
 
 
     def create
-        message = Message.new(message_params)
+        byebug
+        message = message.new(message_params)
+        # message.user_id = current_user.id
+        # message.conversation_id = params[:conversation_id]
         if message.save
-        ActionCable.server.broadcast 'messages',
-            message: message,
-            user: message.user.username,
-            user_facing: true
-        head :ok
-        else 
-        ActionCable.server.broadcast 'messages',
-            errors: message.errors
+            render json: {messages: messages}
+        else
+            render json: {error: "Something went wrong"}
         end
     end
     

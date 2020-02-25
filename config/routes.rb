@@ -2,8 +2,15 @@ Rails.application.routes.draw do
   resources :conversations 
   resources :messages
   resources :users
+  
+  resources :users do
+    resources :conversations do
+      resources :messages
+    end
+  end
   post '/login', to: 'auth#create'
   post '/signup',to: 'users#create'
+  get '/reAuth', to: 'auth#re_auth'
   get '/myconvos/:user_id', to: 'conversations#my_convos'
 
   # *************************************
