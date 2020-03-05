@@ -75,7 +75,7 @@ class ChatChannel < ApplicationCable::Channel
     # uri = URI.parse("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/translate?version=2018-05-01")
     uri = URI.parse("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/translate?version=2018-05-01")
     request = Net::HTTP::Post.new(uri)
-    request.basic_auth("apikey", "O_9KnQNAj3r5edUWLOJDVnvObSrZo0FgFc01C34h-CSz")
+    request.basic_auth("apikey", "*****")
     request.content_type = "application/json"
     request.body = JSON.dump({
       "text" => "#{message}",
