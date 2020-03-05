@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2020_01_22_180737) do
     t.string "language"
     t.string "nationality"
     t.datetime "created_at", precision: 6, null: false
-    
     t.datetime "updated_at", precision: 6, null: false
   end
 

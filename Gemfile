@@ -45,3 +45,8 @@ gem 'fast_jsonapi'
 gem 'jwt'
 gem "active_model_serializers"
 gem 'actioncable'
+gem 'figaro'
+gem 'rest-client'
+gem 'json'
+# gem "async"
+# gem "concurrent-ruby", require: 'concurrent'
