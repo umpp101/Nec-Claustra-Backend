@@ -1,10 +1,10 @@
 # This checks the available language models
-curl --user "apikey:QEVaJ9BoO35X9Rdn-LgyEBM5loerbPalf07VO_S63Kqg" "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/models?version=2018-05-01"
+curl --user "apikey:***" "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/models?version=2018-05-01"
 
 # to ruby 
 uri = URI.parse("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/models?version=2018-05-01")
 request = Net::HTTP::Get.new(uri)
-request.basic_auth("apikey", "QEVaJ9BoO35X9Rdn-LgyEBM5loerbPalf07VO_S63Kqg")
+request.basic_auth("apikey", "***")
 
 req_options = {
   use_ssl: uri.scheme == "https",

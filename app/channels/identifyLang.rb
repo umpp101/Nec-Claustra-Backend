@@ -1,7 +1,7 @@
 #how it identifies a language
 curl -X 
 POST 
--u "apikey:QEVaJ9BoO35X9Rdn-LgyEBM5loerbPalf07VO_S63Kqg" 
+-u "apikey:***" 
 --header "Content-Type: text/plain" 
 --data "Some Random Text Here" 
 "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/identify?version=2018-05-01"
@@ -10,7 +10,7 @@ POST
 #to ruby
 uri = URI.parse("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/identify?version=2018-05-01")
 request = Net::HTTP::Post.new(uri)
-request.basic_auth("apikey", "QEVaJ9BoO35X9Rdn-LgyEBM5loerbPalf07VO_S63Kqg")
+request.basic_auth("apikey", "***")
 # request.content_type = "text/plain"
 request.content_type = "application/json"
 request.body = "Some Random English Text Here"
