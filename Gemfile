@@ -50,3 +50,4 @@ gem 'rest-client'
 gem 'json'
 # gem "async"
 # gem "concurrent-ruby", require: 'concurrent'
+gem "google-cloud-translate", "~> 2.1"

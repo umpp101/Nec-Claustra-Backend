@@ -23,3 +23,5 @@
 
 # Ignore application configuration
 /config/application.yml
+/config/env.yml
+/config/google_cloud.json
