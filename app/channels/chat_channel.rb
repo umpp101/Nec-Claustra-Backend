@@ -7,20 +7,26 @@ class ChatChannel < ApplicationCable::Channel
 
   def speak(data)
     # byebug
+    # find the convo that belongs to the message you just sent from react
     convo = Conversation.find(data["message"]["conversation_id"])
+
+
     other_user_lang = get_other_user(convo, data["message"]["user_id"]).language
     # byebug
     current_user_lang = detect_language(data["message"]["content"])
+
+
     unless other_user_lang != current_user_lang
-      message = Message.create!(content: data["message"]["content"], user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
+      message_content = data["message"]["content"]
+
+      message = Message.create!(content: message_content,translated_content: message_content, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
       socket = { true_message: message }
       #byebug
       ActionCable.server.broadcast("chat_#{data["message"]["conversation_id"]}", socket)
     else
       translate_message = google_translation(data["message"]["content"], other_user_lang)
       # byebug
-      translated_message = Message.create!(content: translate_message, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
-
+      translated_message = Message.create!(content: data["message"]["content"], translated_content: translate_message, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
       # byebug
       socket = { true_message: translated_message }
       # byebug
