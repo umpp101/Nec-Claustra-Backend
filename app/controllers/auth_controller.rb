@@ -1,6 +1,5 @@
 class AuthController < ApplicationController
 
-    # before_action :authorized, except: [:create]
     skip_before_action :authorized
    
     def create

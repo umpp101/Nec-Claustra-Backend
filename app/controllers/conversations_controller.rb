@@ -1,6 +1,5 @@
 class ConversationsController < ApplicationController
   skip_before_action :authorized
-  # skip_before_action :authorized
 
   def index
     user = User.find(params[:user_id])
@@ -44,11 +43,6 @@ class ConversationsController < ApplicationController
       render json: { error: "Something went wrong" }
     end
   end
-
-  # def my_convos
-  #     user_convos = User.find(params[:user_id]).my_convos
-  #     render json: ConversationSerializer.new(user_convos, {include: [:messages]})
-  # end
 
   private
 

@@ -3,7 +3,6 @@ class MessagesController < ApplicationController
 
   def index
     messages = Message.all
-    # MessageSerializer.new(messages).serialized_json
     render json: { messages: messages }, :include => [:user]
   end
 
@@ -27,26 +26,5 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(:content, :translated_content, :conversation_id, :user_id)
   end
-  
 
-
-#   def translate_fetch
-#     uri = URI.parse("https://api.us-south.language-translator.watson.cloud.ibm.com/instances/71520e26-af24-4dd7-97d9-8e9135217e55/v3/translate?version=2018-05-01")
-#     request = Net::HTTP::Post.new(uri)
-#     request.basic_auth("apikey", "O_9KnQNAj3r5edUWLOJDVnvObSrZo0FgFc01C34h-CSz")
-#     request.content_type = "application/json"
-#     request.body = JSON.dump({
-#       "text" => [
-#         "Hello, world! ",
-#         "How are you?",
-#       ],
-#       "model_id" => "en-es",
-#     })
-#     req_options = {
-#       use_ssl: uri.scheme == "https",
-#     }
-#     response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-#       http.request(request)
-#     end
-#   end
 end
