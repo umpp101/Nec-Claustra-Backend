@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://github.com/umpp101/Nec-Claustra-Backend"><img src="https://github.com/umpp101/Nec-Claustra-Frontend/blob/master/public/actualLogo.png" alt="NecClaustra" width="300px"></a>
+  <a href="https://github.com/umpp101/Nec-Claustra-Backend"><img src="https://github.com/umpp101/Nec-Claustra-Frontend/blob/master/public/actualLogo.png" alt="NecClaustra" width="100px"></a>
   <br>
   <br>
 </p>
@@ -10,7 +10,7 @@
 - [Features](#features)
 - [Usage](#usage)
 - [LiveSite](#LiveSite)
-- [Backend](#Backend)
+- [Frontend](#Frontend)
 
 ## About
 `Nec Claustra: No Barriers in latin.
@@ -22,6 +22,14 @@ I initially created this app, implementing IBM Watson's translate API and then l
 
 Set up a rails RESTful API with PostgreSQL to store data. JWT tokens, Bcrypt for Login/ReAuth.
 
+<a href="https://github.com/umpp101/Nec-Claustra-Frontend"><img src="https://github.com/umpp101/Nec-Claustra-Frontend/blob/master/public/nec-claustra-gif-1.gif" alt="NecClaustra" width="700px"></a>
+## Features
+- Detecting user languages ✅
+- Generating messages that are translated ✅
+- Allowing the users to search for users to chat with ✅
+- Allowing user to delete conversations, they no longer are in ✅
+
+<a href="https://github.com/umpp101/Nec-Claustra-Frontend"><img src="https://github.com/umpp101/Nec-Claustra-Frontend/blob/master/public/nec-claustra-gif-2.gif" alt="NecClaustra" ></a>
 
 ## Features
 - Detecting user languages ✅
