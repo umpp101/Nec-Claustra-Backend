@@ -5,6 +5,14 @@ class ChatChannel < ApplicationCable::Channel
     stream_from "chat_channel"
   end
 
+
+  def alert(data)
+    # byebug
+    socket = { check: true }
+      ActionCable.server.broadcast("global", socket)
+  end
+
+
   def speak(data)
     # byebug
     # find the convo that belongs to the message you just sent from react
@@ -49,6 +57,9 @@ class ChatChannel < ApplicationCable::Channel
     user.conversations.each do |convo|
       stream_from "chat_#{convo.id}"
     end
+    stream_from "global"
+    # socket = { check: true }
+    # ActionCable.server.broadcast("chat_#{data["user_id"]}", socket)
   end
 
   def unsubscribed; end
