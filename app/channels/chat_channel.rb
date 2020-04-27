@@ -8,7 +8,7 @@ class ChatChannel < ApplicationCable::Channel
 
   def alert(data)
     # byebug
-    socket = { check: true }
+    socket = { alert_receivers: data["message"]["alert_receviers"] }
       ActionCable.server.broadcast("global", socket)
   end
 
@@ -82,7 +82,6 @@ class ChatChannel < ApplicationCable::Channel
     translation = translate.translate message, to: language_code.to_s
     translated_response = translation.text
     # translated_message = translated_response.split('&quot;')[3]
-    # byebug
   end
 
   def get_other_user(convo, current_user_id)
