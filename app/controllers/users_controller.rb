@@ -23,18 +23,9 @@ class UsersController < ApplicationController
     def show
         user = User.find(params[:id])
         render json: UserSerializer.new(user) 
-
     end
 
 
-    def destroy
-        user = User.find(params[:id])
-        if user.destroy
-            render json: {message: "Successfully deleted user"}
-        else
-            render json: {error: "Something went wrong"}
-        end
-    end
 
     private
 

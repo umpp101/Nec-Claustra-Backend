@@ -35,9 +35,7 @@ class ConversationsController < ApplicationController
   def destroy
     # byebug
     conversation = Conversation.find(params[:id])
-    # byebug
     if conversation.destroy
-      # byebug
       render json: { conversation: conversation }, :include => [:messages]
     else
       render json: { error: "Something went wrong" }
