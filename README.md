@@ -6,11 +6,11 @@
 </p>
 
 ## Table of content
-- [About ](#about)
-- [Features ](#features)
-- [Usage ](#usage)
-- [LiveSite ](#LiveSite)
-- [Frontend ](#Frontend)
+- [About](#about)
+- [Features](#features)
+- [Usage](#usage)
+- [LiveSite](#LiveSite)
+- [Frontend](#Frontend)
 
 ## About
 `Nec Claustra: No Barriers in latin.
