@@ -5,61 +5,32 @@ class ChatChannel < ApplicationCable::Channel
 
 
   def alert(data)
-    socket = {alert_receviers: data["message"]["alert_receviers"], type: data["message"]["type"]}
-    data["message"]["alert_receviers"].each do |user_id|
+    alert, type = [data["message"]["alert_receviers"],data["message"]["type"]]
+    socket = {alert_receviers: alert, type: type}
+    data.alert.each do |user_id|
       ActionCable.server.broadcast("user_stream_#{user_id}", socket)
     end
   end
 
 
   def speak(data)
-    convo = Conversation.find(data["message"]["conversation_id"])
-    other_user_lang = get_other_user(convo, data["message"]["user_id"]).language
-    current_user_lang = detect_language(data["message"]["content"])
-    user_name = get_user(convo, data["message"]["user_id"]).user_name
-    unless other_user_lang != current_user_lang
-      message_content = data["message"]["content"]
-      message = Message.create!(content: message_content,translated_content: message_content, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
-      socket = { true_message: message, type:"new_message", name: user_name }
-      data["message"]["alert_receviers"].each do |user_id|
-        ActionCable.server.broadcast("user_stream_#{user_id}", socket)
-      end
+    convo_id, user_id, content = [data["message"]["conversation_id"],data["message"]["user_id"],data["message"]["content"]]
+    convo = Conversation.find(convo_id)
+    current_user_lang, other_user_lang = [detect_language(content) , get_other_user_lang(convo, user_id)]
+    user_name = get_user(convo, user_id).user_name
+    if other_user_lang != current_user_lang
+      message = google_translation(content, other_user_lang)
     else
-      translate_message = google_translation(data["message"]["content"], other_user_lang)
-      translated_message = Message.create!(content: data["message"]["content"], translated_content: translate_message, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
-      socket = { true_message: translated_message,  type:"new_message", name: user_name}
+      message = content
+    end
+      message = Message.create!(content: content,translated_content: message, user_id: user_id, conversation_id: convo_id)
+      socket = { true_message: message,  type:"new_message", name: user_name}
       data["message"]["alert_receviers"].each do |user_id|
         ActionCable.server.broadcast("user_stream_#{user_id}", socket)
       end
-    end
-  end
-
-  # def speak(data)
-  #   # byebug
-  #   convo = Conversation.find(data["message"]["conversation_id"])
-  #   user = User.find(data["message"]["user_id"])
-  #   other_user = get_other_user(convo, data["message"]["user_id"])
-  #   other_user_lang = other_user.language
-  #   message_content = data["message"]["content"]
-  #   current_user_lang = detect_language(data["message"]["content"])
     
-  #   if other_user_lang != current_user_lang
-  #     translated_content = google_translation(data["message"]["content"], other_user_lang)
-  #   else
-  #     translated_content = qmessage_content
-
-  #   message = Message.create!(content: message_content,translated_content: translated_content, user_id: data["message"]["user_id"], conversation_id: data["message"]["conversation_id"])
-  #   socket = { true_message: message, type:"new_message", name: user.user_name}
-  #   data["message"]["alert_receviers"].each do |user_id|
-  #     ActionCable.server.broadcast("user_stream_#{user_id}", socket)
-  #   end
-  # end
-
-  def create(opts)
-    Message.create(
-      body: opts.fetch("body"),
-    )
   end
+
 
   def convo_connector(data)
     user_id = JSON.parse(data["message"])["user_id"]
@@ -69,14 +40,13 @@ class ChatChannel < ApplicationCable::Channel
 
   def unsubscribed; end
 
-  private
+private
 
   def detect_language(text)
     project_id = ENV["CLOUD_PROJECT_ID"]
     translate = Google::Cloud::Translate.new version: :v2
     detection = translate.detect text.to_s
     user_lang = detection.language
-    # byebug
   end
 
   def google_translation(message, language_code)
@@ -87,15 +57,14 @@ class ChatChannel < ApplicationCable::Channel
     translated_response = translation.text
   end
 
-  def get_other_user(convo, current_user_id)
-    # byebug
+  def get_other_user_lang(convo, current_user_id)   
     if current_user_id === convo.receiver_id
       other_user_id = convo.sender_id
     else
       other_user_id = convo.receiver_id
     end
       other_user = User.find(other_user_id)
-      other_user
+      other_user.language
   end
   
   def get_user(convo, current_user_id)
