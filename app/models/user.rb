@@ -20,9 +20,5 @@ class User < ApplicationRecord
         conversations.map{|el| el.id}
     end
 
-    # def my_convos
-    #     # this filters all the convos and outputs the ones where my user_id im either a sender or receiver
-    #     Conversation.all.select{|convo| convo.sender_id === self.id || convo.receiver_id === self.id}
-    # end
 
 end
